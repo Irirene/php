@@ -4,11 +4,13 @@ namespace src\Models\User;
 
 
 class User{
-    private $name;
-
-    public function __construct(string $name){
-        $this->name = $name;
-    }
+    private $id;
+    private $nickname;
+    private $email;
+    private $isConfirmed;
+    private $role;
+    private $passwordHash;
+    private $authToken;
 
     public function getName(){
         return $this->name;

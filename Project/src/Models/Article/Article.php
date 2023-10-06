@@ -6,15 +6,35 @@ use src\Models\User\User;
 class Article{
     private $title;
     private $text;
-    private $author;
+    private $authorId;
+    private $id;
 
-    public function __construct(string $title, string $text, User $author){
-        $this->title = $title;
-        $this->text = $text;
-        $this->author = $author;
+    public function __set($name, $value){
+        $propertyName = $this->underscoreToCamelcase($name);
+        $this->propertyName = $value;
     }
 
-    public function getAuthor():User{
-        return $this->author;
+    public function underscoreToCamelcase(string $name):string
+    {
+        return lcfirst(str_replace('_', '', ucwords($name, '_')));
+    }
+
+    public function getAuthorId():User
+    {
+        return $this->authorId;
+    }
+
+    public function getId(){
+        return $this->id;
+    }
+
+    public function getTitle():string
+    {
+        return $this->title;
+    }
+
+    public function getText():string
+    {
+        return $this->text;
     }
 }

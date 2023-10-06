@@ -20,6 +20,7 @@ foreach($routes as $pattern=>$controllerAndAction)
     }
 }
 
+unset($matches[0]);
 if ($isRouteFound)
 {
     $controllerName = $controllerAndAction[0];

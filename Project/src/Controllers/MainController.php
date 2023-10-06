@@ -1,21 +1,21 @@
 <?php
 namespace src\Controllers;
 use src\View\View;
+use Servieces\Db;
 
 class MainController
 {
     private $view;
+    private $db;
 
     public function __construct(){
-        $this->view = new View(__DIR__.'/../../template/');  
+        $this->view = new View(__DIR__.'/../../template/');
+        $this->db = new Db;
     }
     
-    public function main()
-    {
-        $article = [
-            ['title' =>'Заголовок 1', 'text'=>'Наша статья'],
-            ['title' =>'Заголовок 2', 'text'=>'Our Article']
-        ];
+    public function main(){
+        $sql = 'SELECT * FROM `articles`';
+        $article = $this->db->query($sql);
         $this->view->renderHtml('main/main.php', ['article'=>$article]);
     }
 
