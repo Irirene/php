@@ -22,7 +22,7 @@ abstract class ActiveRecordEntity{
             $propertyName = $property->getName();
             $propertiesName[$propertyNameToDbFormart] = $this->$propertyName;
         }
-        var_dump($propertiesName);
+        //var_dump($propertiesName);
         return $propertiesName;
 
     }
@@ -44,7 +44,7 @@ abstract class ActiveRecordEntity{
     public static function  findAll():array
     {
         $db = Db::getInstance();
-        $sql = 'SELECT * FROM `'.static::getTableName().'`';
+        $sql = 'SELECT * FROM `'.static::getTableName().'` ORDER BY `id` DESC';
         $article = $db->query($sql, [], static::class);
         return $article;
     }
@@ -63,8 +63,18 @@ abstract class ActiveRecordEntity{
         else $this->update($mapped);
     }
 
-    public function update(){
-        
+    public function update(array $mappedProperties){
+        $db = Db::getInstance();
+        $key2param = [];
+        $param2value = [];
+        foreach($mappedProperties as $key=>$value){
+            $column = '`'.$key.'`';
+            $param = ':'.$key;
+            $key2param[] = $column.' = '.$param;
+            $param2value[$param] = $value;
+        }
+        $sql = 'UPDATE `'.static::getTableName().'` SET'.implode(',', $key2param).' WHERE `id`='.$this->id;
+        $db->query($sql, $param2value);
     }
 
     public function insert(array $mappedProperties){
@@ -85,6 +95,11 @@ abstract class ActiveRecordEntity{
         $db->query($sql, $params2Values);       
     }
 
+    public function delete(){
+        $db = Db::getInstance();
+        $sql = 'DELETE FROM `'.static::getTableName().'` WHERE `id`=:id';
+        $db->query($sql, [':id'=>$this->id]);
+    }
 
     abstract public static function getTableName():string;
 
