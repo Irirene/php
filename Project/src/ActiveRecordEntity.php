@@ -49,12 +49,20 @@ abstract class ActiveRecordEntity{
         return $article;
     }
 
-    public static function getById(int $id):static
+    public static function where(int $entityId, string $nameField){
+        $db = Db::getInstance();
+        $sql = 'SELECT * FROM `'.static::getTableName().'` WHERE `'.$nameField.'` =:entityId;';
+        $entity = $db->query($sql, [':entityId'=>$entityId], static::class);
+        return $entity; //? $entity : null;
+    }
+
+    public static function getById(int $id):?static
     {
         $db = Db::getInstance();
         $sql = 'SELECT * FROM `'.static::getTableName().'` WHERE `id` =:id;';
         $article = $db->query($sql, [':id'=>$id], static::class);
-        return $article[0];
+        return $article ? $article[0] : null;
+
     }
 
     public function save(){

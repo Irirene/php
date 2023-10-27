@@ -2,6 +2,7 @@
 
 namespace src\Models\Article;
 use src\Models\User\User;
+use src\Models\Comment\Comment;
 use src\ActiveRecordEntity;
 
 class Article extends ActiveRecordEntity{

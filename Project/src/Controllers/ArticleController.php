@@ -3,6 +3,8 @@ namespace src\Controllers;
 use src\View\View;
 use src\Models\Article\Article;
 use src\Models\User\User;
+use src\Models\Comment\Comment;
+
 
 class ArticleController{
 
@@ -13,20 +15,20 @@ class ArticleController{
     }
 
     public function index(){
-        $article = Article::findAll();
+        $article= Article::findAll();
         $this->view->renderHtml('main/main.php', ['article'=>$article]);
     }
 
     public function show($id){
         $article = Article::getById($id);
         $user = $article->getAuthorId();
-        
+        $comment = Comment::where($article->getId(), 'article_id');
 
         if(!$article){
             $this->view->renderHtml('main/error.php', [], 404);
             return;
         }
-        $this->view->renderHtml('articles/show.php', ['article'=>$article, 'user'=>$user]);
+        $this->view->renderHtml('articles/show.php', ['article'=>$article, 'user'=>$user, 'comments'=>$comment]);
     }
 
     public function create(){
